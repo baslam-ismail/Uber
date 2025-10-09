@@ -1,17 +1,31 @@
-// cancelBooking.test.ts
 import { describe, test, expect, beforeEach } from "vitest";
 import { Rider } from "../app/models/rider";
 import { Ride } from "../app/models/ride";
 import { Driver } from "../app/models/driver";
 import { cancelBooking } from "../app/component/booking";
 
+export interface Clock {
+  getNow(): Date;
+}
+
+export class StubClock implements Clock {
+  constructor(public date: Date) {}
+
+  getNow(): Date {
+    return this.date;
+  }
+}
+
 describe("User Story 2 : Cancel a ride", () => {
   let rider: Rider;
   let driver: Driver;
   let ride: Ride;
-  let today: Date;
+  let clock: StubClock;
+  let now = new Date("2025-06-15");
 
   beforeEach(() => {
+    clock = new StubClock(now);
+
     rider = {
       id: "1",
       name: "Alice",
@@ -22,7 +36,6 @@ describe("User Story 2 : Cancel a ride", () => {
     driver = {
       id: "d1",
       name: "Bob",
-      isAvailable: true,
       isOnRoad: false,
     };
 
@@ -35,13 +48,11 @@ describe("User Story 2 : Cancel a ride", () => {
       distanceKm: 12,
       price: 25,
     };
-
-    today = new Date("2025-01-01");
   });
 
   test("should cancel the ride without penalty if the driver is not on the road", () => {
     driver.isOnRoad = false;
-    expect(cancelBooking(rider, ride, driver, today)).toBe("Course annulée sans pénalité.");
+    expect(cancelBooking(rider, ride, driver, clock.getNow())).toBe("Course annulée sans pénalité.");
     expect(ride.status).toBe("annulée");
     expect(rider.balance).toBe(50);
   });
@@ -50,8 +61,7 @@ describe("User Story 2 : Cancel a ride", () => {
   test("should apply a 5€ penalty if the driver is already on the road", () => {
     driver.isOnRoad = true;
     rider.balance = 50;
-    today = new Date("2025-06-15");
-    expect(cancelBooking(rider, ride, driver, today)).toBe("Course annulée avec pénalité de 5€.");
+    expect(cancelBooking(rider, ride, driver, clock.getNow())).toBe("Course annulée avec pénalité de 5€.");
     expect(ride.status).toBe("annulée");
     expect(rider.balance).toBe(45);
   });
@@ -59,15 +69,15 @@ describe("User Story 2 : Cancel a ride", () => {
 
   test("should not allow cancelling a ride that is already cancelled", () => {
     ride.status = "annulée";
-    expect(cancelBooking(rider, ride, driver, today)).toBe("Cette course est déjà annulée.");
+    expect(cancelBooking(rider, ride, driver, clock.getNow())).toBe("Cette course est déjà annulée.");
   });
 
 
   test("should cancel the ride for free if it’s the rider’s birthday", () => {
     driver.isOnRoad = true;
     rider.balance = 50;
-    today = new Date("2025-01-01");
-    expect(cancelBooking(rider, ride, driver, today)).toBe("Course annulée sans pénalité.");
+    clock = new StubClock(new Date("2025-01-01"));
+    expect(cancelBooking(rider, ride, driver, clock.getNow())).toBe("Course annulée sans pénalité.");
     expect(ride.status).toBe("annulée");
     expect(rider.balance).toBe(50);
   });
