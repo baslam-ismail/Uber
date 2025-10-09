@@ -1,22 +1,23 @@
-// Update with your config settings.
+// db/knexfile.js - CommonJS
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
-/**
- * @type { Object.<string, import("knex").Knex.Config> }
- */
-module.exports = {
-  development: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+/** @type {{[k:string]: import('knex').Knex.Config}} */
+const config = {
+    development: {
+        client: 'pg',
+        connection: process.env.DATABASE_URL,
+        migrations: {
+            // chemins absolus pour éviter les ambiguïtés (knexfile placé dans /db)
+            directory: path.join(__dirname, '..', 'migrations'),
+            extension: 'ts'
+        },
+        seeds: {
+            directory: path.join(__dirname, '..', 'seeds'),
+            extension: 'ts'
+        }
     },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  },
+
 };
+
+module.exports = config;
