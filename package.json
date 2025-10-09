@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "start": "node src/index.ts",
@@ -18,7 +18,11 @@
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "@vitest/coverage-v8": "3.2.4",
+    "tsconfig-paths": "4.2.0",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
