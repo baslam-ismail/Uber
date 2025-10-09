@@ -3,6 +3,8 @@ import { describe, test, expect, beforeEach } from "vitest";
 import { Rider } from "../app/models/rider";
 import { createBooking } from "../app/component/booking";
 
+
+
 describe("User Story: Rider booking a ride", () => {
   let rider: Rider;
 
@@ -15,11 +17,26 @@ describe("User Story: Rider booking a ride", () => {
     };
   });
 
+  test("should return a Rider object", () => {
+    expect(rider).toEqual({
+        id: "1",
+        name: "Alice",
+        balance: 50,
+        birthDate: new Date("1990-01-01"),
+     });
+    });
+
+  test("should create a booking with correct details", () => {
+    const booking = createBooking(rider, "Paris", "Paris", 10);
+    expect(typeof booking).toBe("object");  
+    });
+
+
   test("should allow the rider to book a ride if they have enough funds", () => {
     expect(typeof createBooking(rider, "Paris", "Paris", 5)).toBe("object");
     if (typeof createBooking(rider, "Paris", "Paris", 5) !== "string") {
       expect(rider.balance).toBeLessThan(50);
-      expect(rider.currentBookingId).toBeDefined();
+      expect(rider.rideId).toBeDefined();
     }
   });
 
@@ -36,9 +53,9 @@ describe("User Story: Rider booking a ride", () => {
   test("should allow the rider to cancel and then make a new booking", () => {
     createBooking(rider, "Paris", "Paris", 5);
     rider.balance = 50;
-    rider.currentBookingId = undefined;
+    rider.rideId = undefined;
     expect("Réservation annulée avec succès.").toBe("Réservation annulée avec succès.");
-    expect(rider.currentBookingId).toBeUndefined();
+    expect(rider.rideId).toBeUndefined();
     expect(rider.balance).toBe(50);
     expect(typeof createBooking(rider, "Paris", "Paris", 3)).toBe("object");
   });

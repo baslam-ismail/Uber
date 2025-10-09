@@ -4,7 +4,7 @@ import { Driver } from "../models/driver";
 import { calculatePrice } from "./price_rider";
 
 export function createBooking(rider: Rider, origin: string, destination: string, distanceKm: number): Ride | string {
-  if (rider.currentBookingId) {
+  if (rider.rideId) {
     return "Le rider a déjà une réservation active.";
   }
 
@@ -25,7 +25,7 @@ export function createBooking(rider: Rider, origin: string, destination: string,
   };
 
   rider.balance -= price; // on réserve le montant
-  rider.currentBookingId = ride.id;
+  rider.rideId = ride.id;
 
   return ride;
 }
