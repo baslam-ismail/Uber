@@ -7,7 +7,7 @@ export type Ride = {
     destination: string;
     distanceKm: number;
     price: number;         // en euros, 2 décimales
-    status: 'PENDING' | 'ASSIGNED' | 'CANCELLED' | 'COMPLETED';
+    status: 'en cours' | 'acceptée' | 'annulée';
     riderId: number;
     driverId?: number | null;
     booked_at: Date;
@@ -33,7 +33,7 @@ export async function createBookingWithAPI(
 
     const price = Number((BASE_PRICE_EUR + distanceKm * PRICE_PER_KM_EUR).toFixed(2));
     if (rider.balance < price) {
-        return 'INSUFFICIENT_FUNDS';
+        return 'Fonds insuffisants pour réserver la course.';
     }
 
     // débite le rider (en vrai, fais l'UPDATE en DB + transaction)
@@ -44,7 +44,7 @@ export async function createBookingWithAPI(
         destination,
         distanceKm,
         price,
-        status: 'PENDING',
+        status: 'en cours',
         riderId: rider.id,
         driverId: null,
         booked_at: new Date(),
