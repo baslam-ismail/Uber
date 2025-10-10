@@ -6,5 +6,5 @@ export interface Ride {
   price: number;
   riderId: string;
   driverId?: string;
-  status: 'PENDING'| 'ASSIGNED'| 'CANCELLED'| 'COMPLETED';
+  status: 'en cours' | 'acceptée' | 'annulée';
 }
