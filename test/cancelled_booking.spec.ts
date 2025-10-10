@@ -21,6 +21,8 @@ describe("User Story : Cancel a ride", () => {
     driver = getDriverById("d1")!;
     const rideId = getRideIdByRiderId(rider.id);
     ride = getRideById(rideId!)!;
+    const rideFromService = getRideById(rideId!)!;
+    ride = { ...rideFromService, status: "en cours" };
   });
 
   test("should cancel the ride without penalty if the driver is not on the road", () => {

@@ -13,11 +13,9 @@ const drivers: Driver[] = [
   },
 ];
 
-
 export function getDriverById(id: string): Driver | undefined {
   return drivers.find((driver) => driver.id === id);
 }
-
 
 export function setDriverStatus(id: string, isOnRoad: boolean): boolean {
   const driver = getDriverById(id);
