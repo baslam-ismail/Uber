@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach } from "vitest";
-import { calculatePrice } from "../app/price_rider";
+import { calculatePrice } from "../app/price_ride";
 import { StubClock } from "./stub-clock";
 
 

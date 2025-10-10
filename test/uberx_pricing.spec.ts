@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { calculatePrice } from "../app/price_rider";
+import { calculatePrice } from "../app/price_ride";
 
 describe("User Story: UberX adds +5€, but free on the rider's birthday", () => {
 
