@@ -1,7 +1,7 @@
 import { Rider} from "./models/rider";
 import { Ride } from "./models/ride";
 import { Driver } from "./models/driver";
-import { calculatePrice, calculatePriceWithAPI} from "./price_rider";
+import { calculatePrice, calculatePriceWithAPI} from "./price_ride";
 import { StubGoogleScanner } from "../test/stub-googleScanner";
 
 export function createBooking(rider: Rider, origin: string, destination: string, distanceKm: number): Ride | string {
