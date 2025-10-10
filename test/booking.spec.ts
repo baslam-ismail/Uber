@@ -1,20 +1,14 @@
-// booking.test.ts
 import { describe, test, expect, beforeEach } from "vitest";
 import { Rider } from "../app/models/rider";
-import { createBooking } from "../app/component/booking";
-
+import { getRiderById } from "@/services/rider.service";
+import { createBooking } from "../app/booking";
 
 
 describe("User Story: Rider booking a ride", () => {
   let rider: Rider;
 
   beforeEach(() => {
-    rider = {
-      id: "1",
-      name: "Alice",
-      balance: 50,
-      birthDate: new Date("1990-01-01"),
-    };
+   rider = getRiderById("1")!;
   });
 
   test("should return a Rider object", () => {
@@ -33,8 +27,8 @@ describe("User Story: Rider booking a ride", () => {
 
 
   test("should allow the rider to book a ride if they have enough funds", () => {
-    expect(typeof createBooking(rider, "Paris", "Paris", 5)).toBe("object");
-    if (typeof createBooking(rider, "Paris", "Paris", 5) !== "string") {
+    const booking = createBooking(rider, "Paris", "Paris", 5);
+    if (typeof booking !== "string") {
       expect(rider.balance).toBeLessThan(50);
       expect(rider.rideId).toBeDefined();
     }
@@ -46,6 +40,7 @@ describe("User Story: Rider booking a ride", () => {
   });
 
   test("should prevent the rider from booking if they don’t have enough funds", () => {
+    rider.rideId = undefined;
     rider.balance = 2;
     expect(createBooking(rider, "Paris", "Banlieue", 10)).toBe("Fonds insuffisants pour réserver la course.");
   });

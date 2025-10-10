@@ -3,5 +3,5 @@ export interface Rider {
   name: string;
   balance: number; 
   birthDate: Date; 
-  rideId?: string; // null s’il n’a pas de réservation active
+  rideId?: string; 
 }

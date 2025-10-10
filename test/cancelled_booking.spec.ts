@@ -2,21 +2,13 @@ import { describe, test, expect, beforeEach } from "vitest";
 import { Rider } from "../app/models/rider";
 import { Ride } from "../app/models/ride";
 import { Driver } from "../app/models/driver";
-import { cancelBooking } from "../app/component/booking";
+import { cancelBooking } from "../app/booking";
+import { getRiderById } from "@/services/rider.service";
+import { getDriverById } from "@/services/driver.service";
+import { getRideById, getRideIdByRiderId } from "@/services/price_rider.service";
+import { StubClock } from "./stub-clock";
 
-export interface Clock {
-  getNow(): Date;
-}
-
-export class StubClock implements Clock {
-  constructor(public date: Date) {}
-
-  getNow(): Date {
-    return this.date;
-  }
-}
-
-describe("User Story 2 : Cancel a ride", () => {
+describe("User Story : Cancel a ride", () => {
   let rider: Rider;
   let driver: Driver;
   let ride: Ride;
@@ -25,29 +17,10 @@ describe("User Story 2 : Cancel a ride", () => {
 
   beforeEach(() => {
     clock = new StubClock(now);
-
-    rider = {
-      id: "1",
-      name: "Alice",
-      balance: 50,
-      birthDate: new Date("1990-01-01"),
-    };
-
-    driver = {
-      id: "d1",
-      name: "Bob",
-      isOnRoad: false,
-    };
-
-    ride = {
-      id: "b1",
-      riderId: "1",
-      status: "en cours",
-      origin: "Point A",
-      destination: "Point B",
-      distanceKm: 12,
-      price: 25,
-    };
+    rider = getRiderById("1")!;
+    driver = getDriverById("d1")!;
+    const rideId = getRideIdByRiderId(rider.id);
+    ride = getRideById(rideId!)!;
   });
 
   test("should cancel the ride without penalty if the driver is not on the road", () => {
