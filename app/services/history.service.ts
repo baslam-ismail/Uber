@@ -1,44 +1,26 @@
-export type Ride = {
-  id: string;
-  riderId: string;
-  driverName: string;
-  date: Date;
-  origin: string;
-  destination: string;
-  price: number;
-};
+import { Ride } from "../models/ride";
 
 
-export function listHistoryForRider(
-  riderId: string,
-  allRides: Ride[]
-) {
-  return allRides
+type RideWithDate = Ride & { date: Date };
+
+export function listHistoryForRider(riderId: string, rides: RideWithDate[]) {
+  return rides
     .filter(r => r.riderId === riderId)
-    .sort((a, b) => b.date.getTime() - a.date.getTime())
-    .map(r => ({
-      id: r.id,
-      date: r.date,
-      origin: r.origin,
-      destination: r.destination,
-      driver: r.driverName,
-      price: r.price,
-    }));
+    .sort((a, b) => b.date.getTime() - a.date.getTime()); 
 }
-
 
 export function frequencyByMonth(rides: { date: Date }[]) {
-  return rides.reduce<Record<string, number>>((acc, r) => {
+  const counts: Record<string, number> = {};
+  for (const r of rides) {
     const key = `${r.date.getFullYear()}-${String(r.date.getMonth() + 1).padStart(2, "0")}`;
-    acc[key] = (acc[key] ?? 0) + 1;
-    return acc;
-  }, {});
+    counts[key] = (counts[key] || 0) + 1;
+  }
+  return counts;
 }
 
-
-export function summaryForRider(riderId: string, allRides: Ride[]) {
-  const list = listHistoryForRider(riderId, allRides);
+export function summaryForRider(riderId: string, rides: RideWithDate[]) {
+  const list = listHistoryForRider(riderId, rides);
   const byMonth = frequencyByMonth(list);
-  const lastRideAt = list[0]?.date; 
-  return { total: list.length, byMonth, lastRideAt, list };
+  const lastRide = list[0]?.date; 
+  return { total: list.length, byMonth, lastRide };
 }
