@@ -5,6 +5,7 @@ export default defineConfig({
 	plugins: [tsconfigPaths()],
 	test: {
 		globals: true,
+        environment: 'node',
 		include: ["test/**/*.{spec,test}.{js,ts}"],
 		coverage: {
 			reporter: ["lcov", "text"],

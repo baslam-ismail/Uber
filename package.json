@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest",
-    "dev": "nodemon src/index.ts",
     "build": "tsc",
     "start": "node src/index.ts",
-    "knex": "ts-node ./node_modules/knex/bin/cli.js"
+    "test": "vitest",
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "knex": "node ./node_modules/knex/bin/cli.js --knexfile db/knexfile.js",
+    "migrate:make": "npm run knex -- migrate:make",
+    "migrate:up": "npm run knex -- migrate:latest",
+    "migrate:down": "npm run knex -- migrate:rollback",
+    "seed": "npm run knex -- seed:run"
   },
   "keywords": [],
   "author": "",
