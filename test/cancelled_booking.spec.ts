@@ -5,7 +5,7 @@ import { Driver } from "../app/models/driver";
 import { cancelBooking } from "../app/booking";
 import { getRiderById } from "@/services/rider.service";
 import { getDriverById } from "@/services/driver.service";
-import { getRideById, getRideIdByRiderId } from "@/services/price_rider.service";
+import { getRideById, getRideIdByRiderId } from "@/services/ride.service";
 import { StubClock } from "./stub-clock";
 
 describe("User Story : Cancel a ride", () => {

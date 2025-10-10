@@ -1,5 +1,5 @@
 import { Ride } from "@/models/ride";
-import { calculatePrice, ServiceType } from "../price_rider";
+import { calculatePrice, ServiceType } from "../price_ride";
 
 const riders: Ride[] = [
   {

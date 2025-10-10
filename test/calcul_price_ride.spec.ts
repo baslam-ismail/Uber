@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach } from "vitest";
-import { getRidePrice } from "../app/services/price_rider.service";
+import { getRidePrice } from "../app/services/ride.service";
 
 
 describe("User Story: Rider booking a ride with the correct price", () => {
