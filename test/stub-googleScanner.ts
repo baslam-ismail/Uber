@@ -1,23 +1,24 @@
-/**
- * Stub pour simuler les appels à l'API Google Maps Distance Matrix.
- * Permet de renvoyer des valeurs fixes en test unitaire.
- */
-export class StubGoogleScanner {
-  constructor(
-    private readonly origin: string,
-    private readonly destination: string,
-    private readonly distanceKm: number
-  ) {}
+import type { IGoogleScanner, DistanceInfo } from '@/services/googleScanner.types';
 
-  async getDistanceInfo(): Promise<{
-    origin: string;
-    destination: string;
-    distanceKm: number;
-  }> {
-    return {
-      origin: this.origin,
-      destination: this.destination,
-      distanceKm: this.distanceKm,
-    };
-  }
+type StubOpts = { origin: string; destination: string; distanceKm: number };
+
+/** Stub pour Google Maps : renvoie des valeurs fixes. */
+export class StubGoogleScanner implements IGoogleScanner {
+    private readonly origin: string;
+    private readonly destination: string;
+    private readonly distanceKm: number;
+
+    constructor(opts: StubOpts) {
+        this.origin = opts.origin;
+        this.destination = opts.destination;
+        this.distanceKm = opts.distanceKm;
+    }
+
+    async getDistanceInfo(): Promise<DistanceInfo> {
+        return {
+            origin: this.origin,
+            destination: this.destination,
+            distanceKm: this.distanceKm,
+        };
+    }
 }

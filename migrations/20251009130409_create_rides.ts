@@ -17,9 +17,9 @@ export async function up(knex: Knex): Promise<void> {
         t.decimal('distance_km', 10, 2).notNullable().defaultTo(0);
 
         // Pricing en cents
-        t.bigInteger('base_price_cents').notNullable().defaultTo(0);
-        t.bigInteger('km_price_cents').notNullable().defaultTo(0);
-        t.bigInteger('surcharge_cents').notNullable().defaultTo(0);
+        t.decimal('base_price', 12, 2).notNullable().defaultTo(0);
+        t.decimal('km_price', 12, 2).notNullable().defaultTo(0);
+        t.decimal('surcharge', 12, 2).notNullable().defaultTo(0);
 
         // Snapshot du type de course au moment de la réservation
         t.boolean('uberx').notNullable().defaultTo(false);
@@ -39,9 +39,9 @@ export async function up(knex: Knex): Promise<void> {
     });
 
     await knex.schema.alterTable('rides', (t) => {
-        t.check('base_price_cents >= 0');
-        t.check('km_price_cents >= 0');
-        t.check('surcharge_cents >= 0');
+        t.check('base_price >= 0');
+        t.check('km_price >= 0');
+        t.check('surcharge >= 0');
         t.index(['rider_id']);
         t.index(['driver_id']);
         t.index(['status']);
